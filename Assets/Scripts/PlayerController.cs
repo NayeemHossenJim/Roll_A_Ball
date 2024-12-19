@@ -32,13 +32,25 @@ public class PlayerController : MonoBehaviour
         if (count >= 12)
         {
             winTextObject.SetActive(true);
+            Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+            winTextObject.gameObject.SetActive(true);
+            winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        }
+    }
+
 
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(movementX,0.0f,movementY);
-        rb.AddForce(movement * speed);
+        rb.AddForce(movement * speed,ForceMode.VelocityChange);
     }
 
     void OnTriggerEnter(Collider other)
